@@ -34,13 +34,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.MYDOCKERHUB }} -p ${{ secrets.TOKEN }}
+
       - name: Build image and push backend
         uses: docker/build-push-action@v2
         with:
           # relative path to the place where source code with Dockerfile is located
           context: ./simple-api
           # Note: tags has to be all lower-case
-          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf/simple-api
+          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf:simple-api
 
       - name: Build image and push database
         uses: docker/build-push-action@v2
@@ -48,7 +51,7 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./database
           # Note: tags has to be all lower-case
-          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf/database
+          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf:database
 
       - name: Build image and push httpd
         uses: docker/build-push-action@v2
@@ -56,4 +59,4 @@ jobs:
           # relative path to the place where source code with Dockerfile is located
           context: ./httpd
           # Note: tags has to be all lower-case
-          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf/httpd
+          tags:  ${{secrets.MYDOCKERHUB}}/tp-devops-epf:httpd
